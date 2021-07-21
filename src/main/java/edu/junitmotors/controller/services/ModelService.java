@@ -1,4 +1,4 @@
-package edu.junitmotors.controller;
+package edu.junitmotors.controller.services;
 
 import edu.junitmotors.model.CarModel;
 import edu.junitmotors.model.KnownDefect;

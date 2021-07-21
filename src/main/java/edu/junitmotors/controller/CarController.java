@@ -1,5 +1,6 @@
 package edu.junitmotors.controller;
 
+import edu.junitmotors.controller.services.ModelService;
 import edu.junitmotors.model.Car;
 import edu.junitmotors.model.CarModel;
 import edu.junitmotors.model.KnownDefect;
@@ -13,10 +14,6 @@ public class CarController {
     private ModelService modelService;
 
     public CarController(ModelService modelService) {
-        this.modelService = modelService;
-    }
-
-    public void setModelConsumer() {
         this.modelService = modelService;
     }
 
