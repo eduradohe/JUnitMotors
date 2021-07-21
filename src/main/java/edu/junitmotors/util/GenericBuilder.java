@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 public class GenericBuilder<T> {
 
     private final Supplier<T> constructor;
-    private List<Consumer<T>> setterDescriptors;
+    private final List<Consumer<T>> setterDescriptors;
 
     /**
      * Private constructor for this builder. New instances of this class should be created by <code>GenericBuilder.of</code>
@@ -36,7 +36,7 @@ public class GenericBuilder<T> {
     }
 
     /**
-     * Accepts a new setter descriptor together with the appropriate value to be setten.
+     * Accepts a new setter descriptor together with the appropriate value to be set.
      *
      * @param classSetter <code>Class::setter</code> is expected here.
      * @param value The value to be set by the setter.

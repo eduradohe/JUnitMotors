@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class CarModel {
@@ -50,7 +49,7 @@ public class CarModel {
      * Increments version accordingly to parameter passed
      * @param by Number of incremental interaction
      */
-    private void incrementVersionBy(final Integer by) {
+    public void incrementVersionBy(final Integer by) {
         this.version += by;
     }
 
@@ -77,7 +76,7 @@ public class CarModel {
      * Name: <code>name</code>
      * Version: <code>version</code>
      *
-     * @return
+     * @return The user friendly data for this Model
      */
     private String prepareDataUXFormatted() throws IllegalAccessException {
 

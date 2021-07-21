@@ -54,9 +54,9 @@ public class CarControllerTest {
             .with(Car::setEngineSerialNumber, "435435")
             .build();
 
-    private static List<Car> CARS_EMPTY = Arrays.asList();
-    private static List<Car> CARS_3CARS_2MODELS = Arrays.asList(CAR1, CAR2, CAR3);
-    private static List<Car> CARS_3CARS_3MODELS = Arrays.asList(CAR1, CAR2, CAR4);
+    private static final List<Car> CARS_EMPTY = Collections.emptyList();
+    private static final List<Car> CARS_3CARS_2MODELS = Arrays.asList(CAR1, CAR2, CAR3);
+    private static final List<Car> CARS_3CARS_3MODELS = Arrays.asList(CAR1, CAR2, CAR4);
 
     // KNOWN DEFECTS
     private static final KnownDefect KNOWN_DEFECT1 = GenericBuilder.of(KnownDefect::new)
@@ -70,9 +70,9 @@ public class CarControllerTest {
             .with(KnownDefect::setModel, CAR_MODEL_HD_I30)
             .build();
 
-    private static List<KnownDefect> KNOWN_DEFECTS_EMPTY = Arrays.asList();
-    private static List<KnownDefect> KNOWN_DEFECTS_1DEFECT = Arrays.asList(KNOWN_DEFECT1);
-    private static List<KnownDefect> KNOWN_DEFECTS_2DEFECTS = Arrays.asList(KNOWN_DEFECT1, KNOWN_DEFECT2);
+    private static final List<KnownDefect> KNOWN_DEFECTS_EMPTY = Collections.emptyList();
+    private static final List<KnownDefect> KNOWN_DEFECTS_1DEFECT = Collections.singletonList(KNOWN_DEFECT1);
+    private static final List<KnownDefect> KNOWN_DEFECTS_2DEFECTS = Arrays.asList(KNOWN_DEFECT1, KNOWN_DEFECT2);
 
     // mocks and controller
     private static ModelService modelService;
@@ -85,8 +85,14 @@ public class CarControllerTest {
     }
 
     @Test
+    public void testFilterModels_withNullCarsList() {
+        final Collection<CarModel> models = carController.filterModels(null);
+        assertThat(Boolean.TRUE, is(models == null));
+    }
+
+    @Test
     public void testFilterModels_with3CarsAnd2Models() {
-        final Set<CarModel> models = this.carController.filterModels(CARS_3CARS_2MODELS);
+        final Collection<CarModel> models = carController.filterModels(CARS_3CARS_2MODELS);
 
         assertThat(2, is(models.size()));
         assertThat(Boolean.TRUE, is(models.contains(CAR_MODEL_VW_GOLF)));
@@ -96,7 +102,7 @@ public class CarControllerTest {
 
     @Test
     public void testFilterModels_with3CarsAnd3Models() {
-        final Set<CarModel> models = this.carController.filterModels(CARS_3CARS_3MODELS);
+        final Collection<CarModel> models = carController.filterModels(CARS_3CARS_3MODELS);
 
         assertThat(3, is(models.size()));
         assertThat(Boolean.TRUE, is(models.contains(CAR_MODEL_VW_GOLF)));
@@ -106,27 +112,34 @@ public class CarControllerTest {
 
     @Test
     public void testFilterModels_withEmptyCarList() {
-        final Set<CarModel> models = this.carController.filterModels(CARS_EMPTY);
+        final Collection<CarModel> models = carController.filterModels(CARS_EMPTY);
 
         assertThat(Boolean.TRUE, is(models.isEmpty()));
     }
 
     @Test
+    public void testFindDefects_withNullCarsList() {
+        final List<KnownDefect> defects = carController.findDefects(null);
+
+        assertThat(Boolean.TRUE, is(defects == null));
+    }
+
+    @Test
     public void testFindDefects_withEmptyCarsList() {
-        final Set<CarModel> expectedCarModelList = this.carController.filterModels(CARS_EMPTY);
+        final Collection<CarModel> expectedCarModelList = carController.filterModels(CARS_EMPTY);
         when(modelService.findDefects(expectedCarModelList)).thenReturn(KNOWN_DEFECTS_EMPTY);
 
-        final List<KnownDefect> defects = this.carController.findDefects(CARS_EMPTY);
+        final List<KnownDefect> defects = carController.findDefects(CARS_EMPTY);
 
         assertThat(Boolean.TRUE, is(defects.isEmpty()));
     }
 
     @Test
     public void testFindDefects_with3CarsAnd2Models() {
-        final Set<CarModel> expectedCarModelList = this.carController.filterModels(CARS_3CARS_2MODELS);
+        final Collection<CarModel> expectedCarModelList = carController.filterModels(CARS_3CARS_2MODELS);
         when(modelService.findDefects(expectedCarModelList)).thenReturn(KNOWN_DEFECTS_1DEFECT);
 
-        final List<KnownDefect> defects = this.carController.findDefects(CARS_3CARS_2MODELS);
+        final List<KnownDefect> defects = carController.findDefects(CARS_3CARS_2MODELS);
 
         assertThat(Boolean.FALSE, is(defects.isEmpty()));
         assertThat(Boolean.TRUE, is(defects.contains(KNOWN_DEFECT1)));
@@ -135,10 +148,10 @@ public class CarControllerTest {
 
     @Test
     public void testFindDefects_with3CarsAnd3Models() {
-        final Set<CarModel> expectedCarModelList = this.carController.filterModels(CARS_3CARS_3MODELS);
+        final Collection<CarModel> expectedCarModelList = carController.filterModels(CARS_3CARS_3MODELS);
         when(modelService.findDefects(expectedCarModelList)).thenReturn(KNOWN_DEFECTS_2DEFECTS);
 
-        final List<KnownDefect> defects = this.carController.findDefects(CARS_3CARS_3MODELS);
+        final List<KnownDefect> defects = carController.findDefects(CARS_3CARS_3MODELS);
 
         assertThat(Boolean.FALSE, is(defects.isEmpty()));
         assertThat(Boolean.TRUE, is(defects.contains(KNOWN_DEFECT1)));
